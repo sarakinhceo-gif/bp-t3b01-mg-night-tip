@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sarakinhceo-gif.github.io/bp-t3b01-mg-night-tip//sitemap.xml
