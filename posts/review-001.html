@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q4_K_M 양자화, 그놈의 히든 딤 때문에 instruction following 박살난 썰 푼다</title>
+  <link rel="canonical" href="https://t3b01-mg-night-tip.pages.dev/posts/review-001.html">
+  <style>
+    body { font-family: sans-serif; line-height: 1.8; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
+    h1 { font-family: serif; color: #111; margin-bottom: 0.5em; }
+    h2 { font-size: 1.4em; margin: 1.5em 0 0.5em; color: #222; }
+    h3 { font-size: 1.15em; margin: 1.2em 0 0.4em; color: #444; }
+    p { margin: 0 0 1em; }
+    a { color: #3182ce; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="../index.html">← 목록으로 돌아가기</a>
+  </header>
+  <main>
+    <h1>Q4_K_M 양자화, 그놈의 히든 딤 때문에 instruction following 박살난 썰 푼다</h1>
+    <article>
+      <p><IMAGE placement="hero" alt="그래프, 신경망, 데이터 분석, 프로그래밍 코드, 복잡한 알고리즘, 딥러닝 모델, 머신러닝, AI, 인공지능, 노드, 연결, 회로, 디지털, 기술, 미래, 과학, 연구, 실험, 텍스처, 패턴, 추상, 구성, 신비로운, 복잡계, 양자점, 퀀텀, 얽힘, 중첩, 정보이론, 통신이론, 복잡도이론, 정보처리, 계산모델, 알고리즘분석, 최적화, 탐색, 발견, 진실, 논리, 수학, 기호, 프랙탈, 나선형, 구조, 계층, 차원, 격자, 맵핑, 시각화, 렌더링, 3D, 렌즈효과, 광선, 빛, 그림자, 네온, 사이버펑크, 일러스트레이션"></p>
+<p>하… 이거 진짜 개빡치는데, 어디 가서 말도 못 하고 속으로만 끙끙 앓다가, 오늘 작정하고 풀어본다. Q4_K_M 양자화 PR 올리기 직전에 발견한 건데, 이게 진짜 숨겨진 복병이더라. Llama 2 7B 모델 가지고 이것저것 만지작거리다가, 유독 instruction following 성능이 뚝 떨어지는 거 아니겠냐. 처음엔 그냥 데이터 문제인가 싶었는데, 파고들수록 묘한 패턴이 보이더라니까.</p>
+<p>특히 특정 히든 딤(hidden dim)들이 싹둑 잘려나가는 게 문제였어. Quantization-aware training (QAT) 돌릴 때도 이걸 제대로 잡아주지 못하니까, 결국 inference 단계에서 엉뚱한 결과물이 튀어나오는 거지. 이게 GPU 아키텍처마다 미묘하게 재현 조건이 다르다는 게 더 골 때리는 부분이야. NVIDIA A100에서는 비교적 잠잠하다가, H100이나 RTX 4090 같은 데서 유독 말썽이더라.</p>
+<p>진짜 밤새워서 로그 뒤지고, 디버깅 툴 굴려가며 원인 분석하는데, 이게 마치 마곡 유흥 꿀팁 찾아 헤매는 심정이랑 비슷하더라니까? 겉으론 번지르르한 정보들 잔뜩인데, 정작 속을 파고들면 쓸만한 건 몇 개 안 되는 거. 이놈의 히든 딤도 딱 그런 격이야. 겉으론 90% 정도만 남겨도 성능 크게 안 떨어질 것 같은데, 그 10%가 instruction following 같은 민감한 작업에서는 치명타로 작용하는 거지.</p>
+<p>결국엔 Quantize-De-Quantize (QDQ) 과정에서 발생하는 정보 손실을 줄이기 위한 새로운 옵티마이저를 급하게 덧붙였어. PR 머지되기 직전에 겨우겨우 쑤셔 넣은 건데, 이것도 완벽하진 않다고 본다. 아마 내년 초에 나올 Quantization-Lib v0.4.1쯤에는 좀 더 근본적인 해결책이 나올지도 모르지. 그전까지는 Q4_K_M 쓸 때 instruction following 성능 저하 좀 감수하거나, 아니면 Q5_K_M 이상 쓰는 게 정신 건강에 이로울 거다.</p>
+<p>이런 엣지 케이스들 때문에 오픈소스 프로젝트 유지하는 게 참… 쉬운 일이 아니라니까. 그래도 한번 발 담그니까, 어쩔 수 없이 끝까지 보게 되는 게 사람 마음인가 봐. 뭐, 아무튼 Q4_K_M 쓰다가 instruction following 때문에 골치 아픈 사람 있으면, 내 썰이 좀이라도 도움 됐으면 좋겠다. 다음엔 더 재밌는 썰로 돌아올게.</p>
+    </article>
+  </main>
+</body>
+</html>

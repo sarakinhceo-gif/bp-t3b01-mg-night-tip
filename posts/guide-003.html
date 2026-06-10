@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>라이트세일이 만능? 웃기는 소리. 재무팀장이 겪은 CPU 크레딧의 배신과 지갑 털린 썰.</title>
+  <link rel="canonical" href="t3b01-mg-night-tip/posts/guide-003.html">
+  <style>
+    body { font-family: sans-serif; line-height: 1.8; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
+    h1 { font-family: serif; color: #111; margin-bottom: 0.5em; }
+    h2 { font-size: 1.4em; margin: 1.5em 0 0.5em; color: #222; }
+    h3 { font-size: 1.15em; margin: 1.2em 0 0.4em; color: #444; }
+    p { margin: 0 0 1em; }
+    a { color: #3182ce; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="../index.html">← 목록으로 돌아가기</a>
+  </header>
+  <main>
+    <h1>라이트세일이 만능? 웃기는 소리. 재무팀장이 겪은 CPU 크레딧의 배신과 지갑 털린 썰.</h1>
+    <article>
+      <p>다들 라이트세일이 싸고 좋다고 떠들더만, 내 경험은 영 딴판이더군. 돈 좀 아껴보겠다고 꼼꼼히 따져봤는데, 결국 남 좋은 일만 시킨 꼴이야. 재무팀장으로서 말하는 건데, 이 바닥은 겉만 보고 덤비면 피 본다니까.</p>
+<p><img src="../assets/interior__hero__t1-shiny-room__1344x768__95a76b1d54b62c82.png" alt="좌절한 사람이 모니터를 노려보고 있고, 옆에는 깨진 저금통이 놓여 있다." loading="lazy" width="1344" height="768"></p>
+<p>작년 이맘때쯤이었을 거야. 회계 마감 주기에 맞춰 급증하는 배치 작업을 처리하려고 EC2 t3a.micro 인스턴스에서 Lightsail로 갈아타는 걸 검토 중이었어. 다들 Lightsail이 간단하고 비용 효율적이라고 입에 침이 마르도록 칭찬하길래, 나도 혹했지. 예약 인스턴스(RI)로 전환하기 전에 Lightsail에서 안정성 테스트를 해볼 작정이었거든.</p>
+<p>### 재무팀장의 계획, 그리고 예상치 못한 통수</p>
+<p>나는 엑셀 시트에 온갖 시나리오를 다 때려 박고, 몇 주간 Lightsail 인스턴스 유형별 비용과 예상 트래픽을 계산했어. 그리고 마침내 특정 워크로드에 가장 적합한 `2GB RAM, 1 vCPU` Lightsail 인스턴스로 `Ubuntu 20.04 LTS (HVM)` AMI를 선택했지. 이제 RI 구매 직전이었어. 그런데 이게 웬걸? AWS에서 `t3a` 계열 가격 인하 공지가 떴는데, 나는 바쁜 와중에 그걸 놓친 거야. 결과적으로 우리는 구 가격으로 RI를 구매하게 됐고, 수천 달러의 기회비용을 허공에 날렸어. 이 정도로 재수 없었다면, 차라리 그 돈으로 마곡 유흥 꿀팁이나 검색해서 직원들 회식이라도 시켜줄 걸 그랬지.</p>
+<p>### CPU 크레딧 소진 3분 전, 그 기묘한 패닉</p>
+<p>재무적 손실로 속이 쓰린 것도 모자라, 기술적인 문제까지 터졌어. 우리가 테스트 중이던 Lightsail 인스턴스에서 아주 기묘한 현상이 발견됐지. 평소처럼 CPU 크레딧을 소모하며 워크로드를 돌리다가, 크레딧이 완전히 소진되기 딱 3분 전, 어김없이 커널 패닉이 터지는 거야. 정확히는 `kernel: BUG: softlockup` 메시지가 뜨면서 시스템이 멈춰 버렸어.</p>
+<p>일반적으로 Lightsail 같은 버스터블 인스턴스는 CPU 크레딧이 바닥나면 성능이 저하될 뿐, 이렇게 시스템 자체가 뻗는 일은 드물거든. 처음엔 애플리케이션 문제인가 싶어서 온갖 로그를 뒤졌지. 그런데 결론은 특정 `Ubuntu 20.04 LTS` AMI와 `Linux kernel 5.4.0-1065-aws` 버전의 조합에서 발생하는 문제였어. 이 커널 버전이 Lightsail 하이퍼바이저의 CPU 크레딧 관리 메커니즘과 미묘하게 충돌하면서, 스로틀링 직전 특정 타이밍에 예측 불가능한 `softlockup`을 유발했던 거지.</p>
+<p>### 비용 절감의 함정, 그리고 뼈아픈 교훈</p>
+<p>이게 별거 아닌 것 같아도, 결국은 돈 문제야. 워크로드가 자꾸 뻗으니까 제대로 된 테스트를 할 수가 없었고, 결국 RI 전환 일정도 미뤄질 수밖에 없었지. 덕분에 우리는 더 긴 시간 동안 온디맨드 비용을 지불해야 했어. 남들이 `Lightsail CPU Credit Monitoring`만 잘하면 된다고 할 때, 나는 이런 `AWS burstable instance unexpected shutdown` 같은 `Lightsail AMI specific bug`에 발목 잡힌 거지.</p>
+<p>결론은 그거야. 싸다고 무조건 좋은 게 아니야. 복잡한 시스템에서는 `AWS instance cost optimization pitfalls`이 늘 도사리고 있어. 특히 재무 담당자라면 숫자 뒤에 숨겨진 이런 기술적 엣지 케이스까지 고려해야 해. 아니면 나처럼 돈은 돈대로 날리고, 뒷목 잡는 상황만 생기니까. 다들 돈 아끼겠다고 난리지만, 가끔은 한 발짝 물러서서 진짜 문제가 뭔지 파악하는 게 더 중요하다고. 괜히 헛돈 쓰지 말고, 쓸데없는 시행착오로 시간 낭비하지 말라고.</p>
+
+    <div class="juice-ref-yomz3w" style="margin-top:2.5rem;padding:1rem 0;border-top:1px dashed #ccc;font-size:0.9rem;color:#666;">
+      <p style="font-weight:600;margin-bottom:0.5rem;">함께 보면 좋은 정보</p>
+      <ul style="list-style:none;padding:0;margin:0;">
+      <li>보다权威있는 출처의 공식 정보는 <a href="https://mens-esthe.space">shinjuku-mens</a>에서 제공 중입니다.</li>
+      <li>자세한 기술 명세 가이드는 <a href="https://www.w3.org/" rel="noopener noreferrer" target="_blank">공식 가이드 커뮤니티</a>를 참고하십시오.</li>
+      </ul>
+    </div>
+    </article>
+  </main>
+</body>
+</html>
