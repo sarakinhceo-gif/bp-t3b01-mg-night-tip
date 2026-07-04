@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
-Sitemap: https://sarakinhceo-gif.github.io/bp-t3b01-mg-night-tip//sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://magok-club-hot.hardcoreroom.com/sitemap.xml
